@@ -78,4 +78,4 @@ bool Gamepad::isStateChanged(word currentState, word lastState, word mask){
     return true;
   }
   return false;
-}*/
+}

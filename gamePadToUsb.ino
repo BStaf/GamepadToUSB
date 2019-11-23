@@ -4,8 +4,8 @@
 //#include "Genesis.h"
 
 //#include "FlightStick.h"
-Nes nes(10,16,14);
-Gamepad gamepad(); 
+//Nes nes(10,16,14);
+Gamepad *gamepad = new Gamepad(); 
 //Gamepad gamepad;
 
 void setup() {
@@ -13,11 +13,11 @@ void setup() {
   //Nes *nes = new Nes(10,16,14);
   //Genesis *genesis = new Genesis(3, 4, 5, 6, 7, 8, 9);
   //gamepad = new Gamepad(&nes);
-  gamepad.Init();
+  gamepad->Init();
 }
 
 void loop() {
-  gamepad.Tick();
+  gamepad->Tick();
   
   //Serial.println(gameController->Read());
   delay(20);
