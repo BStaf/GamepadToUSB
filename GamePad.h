@@ -1,4 +1,4 @@
-#include <Joystick.h>
+/*#include <Joystick.h>
 #include "IGameController.h"
 
 class Gamepad{
@@ -29,13 +29,14 @@ Gamepad::Gamepad(IGameController *gameController){
 }
 void Gamepad::Init(){
   _joystick->begin();
-  //_joystick->setXAxisRange(-1, 1);
-  //_joystick->setYAxisRange(-1, 1);
+  _joystick->setXAxisRange(-1, 1);
+  _joystick->setYAxisRange(-1, 1);
 }
 
 void Gamepad::Tick(){
   word currentState = _gameController->Read();
   if (currentState != lastState){
+    Serial.println(currentState);
     set_Button(currentState, lastState, 0, 1);
     set_Button(currentState, lastState, 1, 2);
     set_Button(currentState, lastState, 2, 4);
@@ -44,13 +45,17 @@ void Gamepad::Tick(){
     set_Button(currentState, lastState, 5, 32);
     set_Button(currentState, lastState, 6, 64);
     set_Button(currentState, lastState, 7, 128);
-    lastState = currentState;
+    /*set_Button(currentState, lastState, 8, 256);
+    set_Button(currentState, lastState, 9, 512);
+    set_Button(currentState, lastState, 10, 1024);
+    set_Button(currentState, lastState, 11, 2048);*/
+/*    lastState = currentState;
   }
 }
 void Gamepad::set_Button(word currentState, word lastState, byte index, word mask){
   if (isStateChanged(currentState, lastState, mask) ){
     _joystick->setButton(index, (currentState & mask)>0);
-    //Serial.println(index);
+
   }
 }
 bool Gamepad::isStateChanged(word currentState, word lastState, word mask){
@@ -58,4 +63,4 @@ bool Gamepad::isStateChanged(word currentState, word lastState, word mask){
     return true;
   }
   return false;
-}
+}*/

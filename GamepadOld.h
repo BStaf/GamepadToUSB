@@ -1,4 +1,4 @@
-
+#include <Joystick.h>
 #include <SegaController.h>
 
 class Gamepad{

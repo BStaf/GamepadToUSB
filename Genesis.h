@@ -25,22 +25,30 @@ word Genesis::Read(){
 word Genesis::mapToCommonWord(word readWord) {
   word commonWord = 0;
   //up
-  /*commonWord |= (word)((bool)(readWord & (word)8) << 0);
+  commonWord |= (word)((bool)(readWord & (word)2) << 0);
   //down
   commonWord |= (word)((bool)(readWord & (word)4) << 1);
   //left
-  commonWord |= (word)((bool)(readWord & (word)2) << 2);
+  commonWord |= (word)((bool)(readWord & (word)8) << 2);
   //right
-  commonWord |= (word)((bool)(readWord & (word)1) << 3);
+  commonWord |= (word)((bool)(readWord & (word)16) << 3);
   //start
-  commonWord |= (word)((bool)(readWord & (word)16) << 4);
-  //select
-  commonWord |= (word)((bool)(readWord & (word)32) << 5);
+  commonWord |= (word)((bool)(readWord & (word)32) << 4);
+  //select ... mode
+  commonWord |= (word)((bool)(readWord & (word)4096) << 5);
   //A
-  commonWord |= (word)((bool)(readWord & (word)128) << 6);
+  commonWord |= (word)((bool)(readWord & (word)64) << 6);
   //B
-  commonWord |= (word)((bool)(readWord & (word)64) << 7);
-  */
-  Serial.println(readWord);
+  commonWord |= (word)((bool)(readWord & (word)128) << 7);
+  //C
+  commonWord |= (word)((bool)(readWord & (word)256) << 8);
+  //X
+  commonWord |= (word)((bool)(readWord & (word)512) << 9);
+  //Y
+  commonWord |= (word)((bool)(readWord & (word)1024) << 10);
+  //Z
+  commonWord |= (word)((bool)(readWord & (word)2048) << 11);
+  
+  //Serial.println(readWord);
   return commonWord;
 }
