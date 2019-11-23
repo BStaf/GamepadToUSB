@@ -1,5 +1,5 @@
-/*#include <Joystick.h>
-#include "IGameController.h"
+#include <Joystick.h>
+
 
 class Gamepad{
   private:
@@ -9,6 +9,7 @@ class Gamepad{
     bool isStateChanged(word currentState, word lastState, word mask);
     void set_Directional(word currentState, word lastState);
     void set_Button(word currentState, word lastState, byte index, word mask);
+    void clearDirectional();
   public:
     Gamepad(IGameController *gameController);
     void Init();
@@ -31,12 +32,14 @@ void Gamepad::Init(){
   _joystick->begin();
   _joystick->setXAxisRange(-1, 1);
   _joystick->setYAxisRange(-1, 1);
+  //for non analog pads. things get wacky if I don't do this
+  clearDirectional();
 }
 
 void Gamepad::Tick(){
   word currentState = _gameController->Read();
   if (currentState != lastState){
-    Serial.println(currentState);
+    //Serial.println(currentState);
     set_Button(currentState, lastState, 0, 1);
     set_Button(currentState, lastState, 1, 2);
     set_Button(currentState, lastState, 2, 4);
@@ -45,11 +48,11 @@ void Gamepad::Tick(){
     set_Button(currentState, lastState, 5, 32);
     set_Button(currentState, lastState, 6, 64);
     set_Button(currentState, lastState, 7, 128);
-    /*set_Button(currentState, lastState, 8, 256);
+    set_Button(currentState, lastState, 8, 256);
     set_Button(currentState, lastState, 9, 512);
     set_Button(currentState, lastState, 10, 1024);
-    set_Button(currentState, lastState, 11, 2048);*/
-/*    lastState = currentState;
+    set_Button(currentState, lastState, 11, 2048);
+    lastState = currentState;
   }
 }
 void Gamepad::set_Button(word currentState, word lastState, byte index, word mask){
@@ -63,4 +66,28 @@ bool Gamepad::isStateChanged(word currentState, word lastState, word mask){
     return true;
   }
   return false;
+}
+void Gamepad::clearDirectional(){
+  _joystick->setYAxis(0);
+  _joystick->setXAxis(0);
+}
+/*
+void Gamepad::set_Directional(word currentState, word lastState){
+  //check up down
+  if ( (isStateChanged(currentState, lastState, SC_BTN_UP) || (isStateChanged(currentState, lastState, SC_BTN_DOWN) ))){
+    if (currentState & SC_BTN_UP)
+      _joystick->setYAxis(-1);
+    else if (currentState & SC_BTN_DOWN)
+      _joystick->setYAxis(1);
+    else 
+      _joystick->setYAxis(0);    
+  }
+  if ( (isStateChanged(currentState, lastState, SC_BTN_LEFT) || (isStateChanged(currentState, lastState, SC_BTN_RIGHT) ))){
+    if (currentState & SC_BTN_LEFT)
+      _joystick->setXAxis(-1);
+    else if (currentState & SC_BTN_RIGHT)
+      _joystick->setXAxis(1);
+    else
+      _joystick->setXAxis(0);
+  }
 }*/
