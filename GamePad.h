@@ -4,31 +4,32 @@
 class Gamepad{
   private:
     Joystick_ * _joystick;
-    IGameController * _gameController;
+    IGameController ** _gameControllers;
+    int controllerIndex;
     word lastState;
     bool isStateChanged(word currentState, word lastState, word mask);
     void set_Directional(word currentState, word lastState);
     void set_Button(word currentState, word lastState, byte index, word mask);
     void clearDirectional();
   public:
-    Gamepad(IGameController *gameController);
+    Gamepad(IGameController **gameControllers);
     void Init();
     void Tick();
 };
 
-Gamepad::Gamepad(IGameController *gameController){
+Gamepad::Gamepad(IGameController **gameControllers){
   _joystick = new Joystick_(JOYSTICK_DEFAULT_REPORT_ID,JOYSTICK_TYPE_GAMEPAD,
     32, 0,                  // Button Count, Hat Switch Count
     true, true, false,     // X and Y, but no Z Axis
     false, false, false,   // No Rx, Ry, or Rz
     false, false,          // No rudder or throttle
     false, false, false);  // No accelerator, brake, or steering
-  
+  controllerIndex = 1;
   // DB9 Pin 7, DB9 Pin 1, DB9 Pin 2, DB9 Pin 3, DB9 Pin 4, DB9 Pin 6, DB9 Pin 9
-  _gameController = gameController;
-  gameController->Init();
+  _gameControllers = gameControllers;
 }
 void Gamepad::Init(){
+  _gameControllers[controllerIndex]->Init();
   _joystick->begin();
   _joystick->setXAxisRange(-1, 1);
   _joystick->setYAxisRange(-1, 1);
@@ -37,7 +38,7 @@ void Gamepad::Init(){
 }
 
 void Gamepad::Tick(){
-  word currentState = _gameController->Read();
+  word currentState = _gameControllers[controllerIndex]->Read();
   if (currentState != lastState){
     //Serial.println(currentState);
     set_Button(currentState, lastState, 0, 1);
