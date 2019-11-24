@@ -52,12 +52,13 @@ word Nes::mapToCommonWord(word readWord) {
   commonWord |= (word)((bool)(readWord & (word)128) << 6);
   //B
   commonWord |= (word)((bool)(readWord & (word)64) << 7);
+  //if (commonWord > 0)
+  //  Serial.println(commonWord);
   return commonWord;
 }
 byte Nes::shift_In(int myDataPin, int myClockPin) {
   int i;
   int temp = 0;
-  //int pinState;
   byte myDataIn = 0;
 
   pinMode(myClockPin, OUTPUT);
@@ -77,15 +78,9 @@ byte Nes::shift_In(int myDataPin, int myClockPin) {
     delayMicroseconds(0.2);
     temp = digitalRead(myDataPin);
     if (!temp) {
-      //pinState = 1;
-      //set the bit to 0 no matter what
       myDataIn = myDataIn | (1 << i);
     }
-    /*else {
-      //turn it off -- only necessary for debuging
-     //print statement since myDataIn starts as 0
-      pinState = 0;
-    }*/
+
     digitalWrite(myClockPin, 1);
 
   }

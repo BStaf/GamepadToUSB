@@ -19,5 +19,5 @@ void loop() {
   gamepad->Tick();
   
   //Serial.println(gameController->Read());
-  delay(10);
+  delay(5);
 }

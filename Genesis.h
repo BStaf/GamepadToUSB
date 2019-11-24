@@ -36,19 +36,19 @@ word Genesis::mapToCommonWord(word readWord) {
   commonWord |= (word)((bool)(readWord & (word)32) << 4);
   //select ... mode
   commonWord |= (word)((bool)(readWord & (word)4096) << 5);
-  //A
-  commonWord |= (word)((bool)(readWord & (word)64) << 6);
-  //B
+  //A ->maps to Y
+  commonWord |= (word)((bool)(readWord & (word)64) << 9);
+  //B ->maps to B
   commonWord |= (word)((bool)(readWord & (word)128) << 7);
-  //C
-  commonWord |= (word)((bool)(readWord & (word)256) << 8);
-  //X
-  commonWord |= (word)((bool)(readWord & (word)512) << 9);
-  //Y
-  commonWord |= (word)((bool)(readWord & (word)1024) << 10);
-  //Z
+  //C ->maps to A
+  commonWord |= (word)((bool)(readWord & (word)256) << 6);
+  //X ->maps to Left Shoulder
+  commonWord |= (word)((bool)(readWord & (word)512) << 10);
+  //Y ->maps to X
+  commonWord |= (word)((bool)(readWord & (word)1024) << 8);
+  //Z ->maps to Right Shoulder
   commonWord |= (word)((bool)(readWord & (word)2048) << 11);
-  
-  //Serial.println(readWord);
+  //if (readWord > 0)
+  //  Serial.println(readWord);
   return commonWord;
 }
