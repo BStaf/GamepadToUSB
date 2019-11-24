@@ -33,6 +33,7 @@ word Nes::Read(){
 
   return  mapToCommonWord(shift_In(_data, _clock));
 }
+
 word Nes::mapToCommonWord(word readWord) {
   word commonWord = 0;
   //up
