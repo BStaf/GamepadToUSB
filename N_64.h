@@ -20,12 +20,12 @@ void N_64::Init(){
 
 word N_64::Read(){
   if (_n64Controller->read()){
-    if ((_n64Controller->getStatus()).device == NINTENDO_DEVICE_N64_WIRED){
+    /*if ((_n64Controller->getStatus()).device == NINTENDO_DEVICE_N64_WIRED){
       return mapToCommonWord(_n64Controller->getReport());
     }
     else{
       Serial.println("Status Fail");
-    }
+    }*/
   }
   else {
     Serial.println("Read_Fail");
