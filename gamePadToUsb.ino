@@ -3,6 +3,7 @@
 #include "GamePad.h"
 #include "Nes.h"
 #include "Genesis.h"
+#include "N_64.h"
 
 IGameController *gameController[2];
 Gamepad *gamepad;
