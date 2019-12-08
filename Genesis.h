@@ -4,11 +4,14 @@
 class Genesis : public IGameController {
   private:
     SegaController * _controller;
-    word mapToCommonWord(word readWord);
+    bool _hasChanged;
+    unsigned long _lastStatus;
+    unsigned long mapToCommonWord(word readWord);
   public:
     Genesis(int pin1, int pin2, int pin3, int pin4, int pin6, int pin7, int pin9);
     void Init();
-    word Read();
+    ControllerStatus Read();
+    bool HasChanged();
 };
 //DB9 Pin 7, DB9 Pin 1, DB9 Pin 2, DB9 Pin 3, DB9 Pin 4, DB9 Pin 6, DB9 Pin 9
 Genesis::Genesis(int pin1, int pin2, int pin3, int pin4, int pin6, int pin7, int pin9){
@@ -19,10 +22,24 @@ void Genesis::Init(){
   //no init needed
 }
 
-word Genesis::Read(){
-  return  mapToCommonWord(_controller->getState());
+bool Genesis::HasChanged(){
+  return _hasChanged;
 }
-word Genesis::mapToCommonWord(word readWord) {
+
+ControllerStatus Genesis::Read(){
+  ControllerStatus status;
+  status.XAxis = 0;
+  status.YAxis = 0;
+  status.Buttons = mapToCommonWord(_controller->getState());
+
+  if (status.Buttons == _lastStatus)
+    _hasChanged = false;
+  else
+    _hasChanged = true;
+  return status;
+}
+
+unsigned long Genesis::mapToCommonWord(word readWord) {
   word commonWord = 0;
   //up
   commonWord |= (word)((bool)(readWord & (word)2) << 0);
@@ -50,5 +67,5 @@ word Genesis::mapToCommonWord(word readWord) {
   commonWord |= (word)((bool)(readWord & (word)2048) << 11);
   //if (readWord > 0)
   //  Serial.println(readWord);
-  return commonWord;
+  return (unsigned long)commonWord;
 }

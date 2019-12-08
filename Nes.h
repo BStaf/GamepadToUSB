@@ -4,12 +4,15 @@ class Nes : public IGameController {
     int _latch;
     int _clock;
     int _data;
+    bool _hasChanged;
+    unsigned long _lastStatus;
     byte shift_In(int myDataPin, int myClockPin);
-    word mapToCommonWord(word readWord);
+    unsigned long mapToCommonWord(word readWord);
   public:
     Nes(int clk, int latch, int data);
     void Init();
-    word Read();
+    ControllerStatus Read();
+    bool HasChanged();
 };
 
 Nes::Nes(int clk, int latch, int data){
@@ -23,7 +26,14 @@ void Nes::Init(){
   pinMode(_data, INPUT);
 }
 
-word Nes::Read(){
+bool Nes::HasChanged(){
+  return _hasChanged;
+}
+
+ControllerStatus Nes::Read(){
+  ControllerStatus status;
+  status.XAxis = 0;
+  status.YAxis = 0;
   //set it to 1 to collect parallel data
   digitalWrite(_latch,1);
   //set it to 1 to collect parallel data, wait
@@ -31,10 +41,15 @@ word Nes::Read(){
   //set it to 0 to transmit data serially  
   digitalWrite(_latch,0);
 
-  return  mapToCommonWord(shift_In(_data, _clock));
+  status.Buttons = mapToCommonWord(shift_In(_data, _clock));
+  if (status.Buttons == _lastStatus)
+    _hasChanged = false;
+  else
+    _hasChanged = true;
+  return status;
 }
 
-word Nes::mapToCommonWord(word readWord) {
+unsigned long Nes::mapToCommonWord(word readWord) {
   word commonWord = 0;
   //up
   commonWord |= (word)((bool)(readWord & (word)8) << 0);
@@ -54,7 +69,7 @@ word Nes::mapToCommonWord(word readWord) {
   commonWord |= (word)((bool)(readWord & (word)64) << 7);
   //if (commonWord > 0)
   //  Serial.println(commonWord);
-  return commonWord;
+  return (unsigned long)commonWord;
 }
 byte Nes::shift_In(int myDataPin, int myClockPin) {
   int i;
