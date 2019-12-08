@@ -52,9 +52,10 @@ void Gamepad::Tick(){
  IGameController * controller = _gameControllers[_controllerIndex];
  ControllerStatus currentState = controller->Read();
   if (controller->HasChanged()){
+    //update buttons if changed state
     for (int i=0;i<=17;i++)
       set_Button(currentState.Buttons, _lastState.Buttons, i, (unsigned long)1 << i);
-
+    //update analog
     set_Directional(currentState, _lastState);
     _lastState = currentState;
   }
