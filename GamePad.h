@@ -15,7 +15,7 @@ class Gamepad{
     void clearDirectional();
     int getCurrentController(int currentIndex);
   public:
-    int ChangeControllerTicks = 20; //ticks until check for controller change;
+    int ChangeControllerTicks = 50; //ticks until check for controller change;
     Gamepad(IGameController **gameControllers, int controllerCount);
     void Init();
     void Tick();

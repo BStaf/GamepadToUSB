@@ -19,7 +19,7 @@ N_64::N_64(int data){
 }
 void N_64::Init(){
   _n64Controller->begin();
-  delayMicroseconds(100);  // Added delay
+  //delayMicroseconds(100);  // Added delay
   
 }
 
@@ -30,6 +30,7 @@ bool N_64::HasChanged(){
 
 ControllerStatus N_64::Read(){
   ControllerStatus status;
+  status.Buttons = 0;
   //this delay is needed. Not sure why. 
   //read fails without it.
   delay(1);
@@ -45,10 +46,8 @@ ControllerStatus N_64::Read(){
       _lastStatus = status;
     }
   }
-  else {
-    Serial.println("Read_Fail");
-    delay(100);
-  }
+  else 
+    Init();//try again
   return status;
 }
 

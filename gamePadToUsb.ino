@@ -21,6 +21,7 @@ void setup() {
 
 void loop() {
   gamepad->Tick();
-
-  delay(5);
+  //some googling told me a genesis will poll the controller 60 times per second
+  //so I'm going with 15 ms
+  delay(15);
 }
